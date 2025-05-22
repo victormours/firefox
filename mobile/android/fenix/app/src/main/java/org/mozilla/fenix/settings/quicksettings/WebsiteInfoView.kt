@@ -6,6 +6,7 @@ package org.mozilla.fenix.settings.quicksettings
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import mozilla.components.browser.icons.BrowserIcons
@@ -13,6 +14,7 @@ import mozilla.components.support.ktx.kotlin.tryGetHostFromUrl
 import org.mozilla.fenix.databinding.QuicksettingsWebsiteInfoBinding
 import org.mozilla.fenix.ext.components
 import org.mozilla.fenix.ext.loadIntoView
+import org.mozilla.fenix.R
 
 /**
  * MVI View that knows to display a whether the current website uses a secure connection or not.
@@ -42,11 +44,31 @@ class WebsiteInfoView(
     fun update(state: WebsiteInfoState) {
         icons.loadIntoView(binding.faviconImage, state.websiteUrl)
         bindUrl(state.websiteUrl)
+        bindGovernmentInfo(state)
         bindSecurityInfo(state.websiteInfoUiValues)
     }
 
     private fun bindUrl(websiteUrl: String) {
         binding.url.text = websiteUrl.tryGetHostFromUrl()
+    }
+
+    private fun bindGovernmentInfo(state: WebsiteInfoState) {
+      if (state.governmentDomainName != "") {
+
+        binding.governmentInfoIcon.setImageResource(R.drawable.ic_government)
+
+        val govText = provideContext().getString(R.string.quick_settings_sheet_government)
+        binding.governmentInfo.setText(govText)
+
+
+        val domainLabel = provideContext().getString(R.string.government_info_explanation, state.governmentDomainName)
+        binding.governmentDomainInfo.setText(domainLabel)
+
+
+        binding.governmentInfoContainer.visibility = View.VISIBLE
+      } else {
+        binding.governmentInfoContainer.visibility = View.GONE
+      }
     }
 
     private fun bindSecurityInfo(uiValues: WebsiteInfoUiValues) {

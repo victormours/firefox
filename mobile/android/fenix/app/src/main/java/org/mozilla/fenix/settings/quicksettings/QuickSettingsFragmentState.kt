@@ -12,6 +12,7 @@ import mozilla.components.concept.engine.permission.SitePermissions.AutoplayStat
 import mozilla.components.feature.sitepermissions.SitePermissionsRules
 import mozilla.components.feature.sitepermissions.SitePermissionsRules.AutoplayAction
 import mozilla.components.lib.state.State
+import mozilla.components.support.ktx.kotlin.tryGetHostFromUrl
 import org.mozilla.fenix.R
 import org.mozilla.fenix.settings.PhoneFeature
 import org.mozilla.fenix.trackingprotection.ProtectionsState
@@ -41,6 +42,7 @@ data class WebsiteInfoState(
     val websiteTitle: String,
     val websiteInfoUiValues: WebsiteInfoUiValues,
     val certificateName: String,
+    val governmentDomainName: String,
 ) : State {
     companion object {
         /**
@@ -69,7 +71,12 @@ data class WebsiteInfoState(
                 WebsiteInfoUiValues.INSECURE
             }
 
-            return WebsiteInfoState(websiteUrl, websiteTitle, uiValues, certificateName)
+            val governmentDomainName = if (websiteUrl.tryGetHostFromUrl().endsWith(".gouv.fr")) {
+              ".gouv.fr"
+            } else {
+              ""
+            }
+            return WebsiteInfoState(websiteUrl, websiteTitle, uiValues, certificateName, governmentDomainName)
         }
     }
 }
