@@ -2531,6 +2531,8 @@
     <string name="quick_settings_sheet_secure_connection_2">Connection is secure</string>
     <!-- Label that indicates a site is using a insecure connection -->
     <string name="quick_settings_sheet_insecure_connection_2">Connection is not secure</string>
+    <!-- Label that indicates a site is managed by a government -->
+    <string name="quick_settings_sheet_government">Official government website</string>
     <!-- Label that indicates a site is displaying a local document -->
     <string name="quick_settings_sheet_local_page">This page is stored on your device.</string>
     <!-- Label to clear site data -->
@@ -2554,6 +2556,9 @@
     <!-- text shown before the issuer name to indicate who its verified by, %1$s is the name of
      the certificate authority that verified the ticket-->
     <string name="certificate_info_verified_by">Verified By: %1$s </string>
+    <!-- text shown to explain how to tell a website is published by a government, %1$s is the end of the domain
+    name identifiying this government -->
+    <string name="government_info_explanation">The domain name ending in  %1$s proves this is an official government website.</string>
     <!-- Login overflow menu delete button -->
     <string name="login_menu_delete_button">Delete</string>
     <!-- Login overflow menu edit button -->

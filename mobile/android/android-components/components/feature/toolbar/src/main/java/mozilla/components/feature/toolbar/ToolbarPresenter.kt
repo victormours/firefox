@@ -18,6 +18,7 @@ import mozilla.components.concept.toolbar.Toolbar.Highlight
 import mozilla.components.concept.toolbar.Toolbar.SiteTrackingProtection
 import mozilla.components.feature.toolbar.internal.URLRenderer
 import mozilla.components.lib.state.ext.flowScoped
+import mozilla.components.support.ktx.kotlin.tryGetHostFromUrl
 import mozilla.components.support.utils.ext.isContentUrl
 
 /**
@@ -71,6 +72,8 @@ class ToolbarPresenter(
 
             toolbar.siteInfo = if (tab.content.url.isContentUrl()) {
                 Toolbar.SiteInfo.LOCAL_PDF
+            } else if (tab.content.url.tryGetHostFromUrl().endsWith(".gouv.fr")) {
+                Toolbar.SiteInfo.GOVERNMENT
             } else if (tab.content.securityInfo.secure) {
                 Toolbar.SiteInfo.SECURE
             } else {

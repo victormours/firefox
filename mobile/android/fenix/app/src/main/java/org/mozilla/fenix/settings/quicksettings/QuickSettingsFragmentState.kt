@@ -12,6 +12,7 @@ import mozilla.components.concept.engine.permission.SitePermissions.AutoplayStat
 import mozilla.components.feature.sitepermissions.SitePermissionsRules
 import mozilla.components.feature.sitepermissions.SitePermissionsRules.AutoplayAction
 import mozilla.components.lib.state.State
+import mozilla.components.support.ktx.kotlin.tryGetHostFromUrl
 import org.mozilla.fenix.R
 import org.mozilla.fenix.settings.PhoneFeature
 import org.mozilla.fenix.trackingprotection.ProtectionsState
@@ -41,6 +42,7 @@ data class WebsiteInfoState(
     val websiteTitle: String,
     val websiteInfoUiValues: WebsiteInfoUiValues,
     val certificateName: String,
+    val governmentDomainName: String,
 ) : State {
     companion object {
         /**
@@ -63,13 +65,21 @@ data class WebsiteInfoState(
         ): WebsiteInfoState {
             val uiValues = if (isLocalPdf) {
                 WebsiteInfoUiValues.Document
+            } else if (websiteUrl.tryGetHostFromUrl().endsWith(".gouv.fr")) {
+                WebsiteInfoUiValues.GOVERNMENT
             } else if (isSecured) {
                 WebsiteInfoUiValues.SECURE
             } else {
                 WebsiteInfoUiValues.INSECURE
             }
 
-            return WebsiteInfoState(websiteUrl, websiteTitle, uiValues, certificateName)
+            val governmentDomainName = if (uiValues == WebsiteInfoUiValues.GOVERNMENT) {
+              ".gouv.fr"
+            } else {
+              ""
+            }
+
+            return WebsiteInfoState(websiteUrl, websiteTitle, uiValues, certificateName, governmentDomainName)
         }
     }
 }
@@ -86,8 +96,12 @@ enum class WebsiteInfoUiValues(
         R.drawable.ic_lock,
     ),
     INSECURE(
-        R.string.quick_settings_sheet_insecure_connection_2,
-        R.drawable.mozac_ic_broken_lock,
+      R.string.quick_settings_sheet_insecure_connection_2,
+      R.drawable.mozac_ic_broken_lock,
+    ),
+    GOVERNMENT(
+        R.string.quick_settings_sheet_government,
+        R.drawable.ic_government,
     ),
     Document(
         R.string.quick_settings_sheet_local_page,

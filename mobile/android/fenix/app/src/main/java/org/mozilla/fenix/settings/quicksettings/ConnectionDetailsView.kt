@@ -42,6 +42,7 @@ class ConnectionDetailsView(
     fun update(state: WebsiteInfoState) {
         icons.loadIntoView(binding.faviconImage, state.websiteUrl)
         bindUrl(state.websiteUrl)
+        bindGovernmentInfo(state)
         bindSecurityInfo(state.websiteInfoUiValues)
         bindCertificateName(state.certificateName)
         bindTitle(state.websiteTitle)
@@ -52,9 +53,32 @@ class ConnectionDetailsView(
         binding.url.text = websiteUrl
     }
 
+    private fun bindGovernmentInfo(state: WebsiteInfoState) {
+      if (state.websiteInfoUiValues == WebsiteInfoUiValues.GOVERNMENT) {
+        binding.governmentInfoIcon.setImageResource(state.websiteInfoUiValues.iconRes)
+        binding.governmentInfo.setText(state.websiteInfoUiValues.siteInfoRes)
+
+
+        val domainLabel =
+          provideContext().getString(R.string.government_info_explanation, state.governmentDomainName)
+        binding.governmentDomainInfo.setText(domainLabel)
+
+
+        binding.governmentInfoContainer.isVisible = true
+      } else {
+        binding.governmentInfoContainer.isVisible = false
+      }
+    }
+
     private fun bindSecurityInfo(uiValues: WebsiteInfoUiValues) {
+      if (uiValues == WebsiteInfoUiValues.GOVERNMENT) {
+        // A website has to use a secure connection to have the government value
+        binding.securityInfo.setText(WebsiteInfoUiValues.SECURE.siteInfoRes)
+        binding.securityInfoIcon.setImageResource(WebsiteInfoUiValues.SECURE.iconRes)
+      } else {
         binding.securityInfo.setText(uiValues.siteInfoRes)
         binding.securityInfoIcon.setImageResource(uiValues.iconRes)
+      }
     }
 
     @VisibleForTesting
