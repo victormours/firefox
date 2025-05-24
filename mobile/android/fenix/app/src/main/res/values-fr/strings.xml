@@ -2696,6 +2696,8 @@
   <string name="quick_settings_sheet_secure_connection_2">Connexion sécurisée</string>
   <!-- Label that indicates a site is using a insecure connection -->
   <string name="quick_settings_sheet_insecure_connection_2">Connexion non sécurisée</string>
+  <!-- Label that indicates a site is managed by a government -->
+  <string name="quick_settings_sheet_government">Site officiel du gouvernement</string>
   <!-- Label that indicates a site is displaying a local document -->
   <string name="quick_settings_sheet_local_page">Cette page est stockée sur votre appareil.</string>
   <!-- Label to clear site data -->

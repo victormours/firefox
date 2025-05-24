@@ -19,6 +19,7 @@ import mozilla.components.concept.toolbar.Toolbar.SiteTrackingProtection
 import mozilla.components.feature.toolbar.internal.URLRenderer
 import mozilla.components.lib.state.ext.flowScoped
 import mozilla.components.support.utils.ext.isContentUrl
+import mozilla.components.support.utils.GovernmentUrlChecker.findGovernmentTopLevelDomain
 
 /**
  * Presenter implementation for a toolbar implementation in order to update the toolbar whenever
@@ -71,6 +72,8 @@ class ToolbarPresenter(
 
             toolbar.siteInfo = if (tab.content.url.isContentUrl()) {
                 Toolbar.SiteInfo.LOCAL_PDF
+            } else if (findGovernmentTopLevelDomain(tab.content.url) != null) {
+                Toolbar.SiteInfo.GOVERNMENT
             } else if (tab.content.securityInfo.secure) {
                 Toolbar.SiteInfo.SECURE
             } else {

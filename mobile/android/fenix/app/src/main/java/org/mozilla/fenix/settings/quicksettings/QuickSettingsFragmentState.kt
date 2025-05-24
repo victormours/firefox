@@ -15,6 +15,7 @@ import mozilla.components.lib.state.State
 import org.mozilla.fenix.R
 import org.mozilla.fenix.settings.PhoneFeature
 import org.mozilla.fenix.trackingprotection.ProtectionsState
+import mozilla.components.support.utils.GovernmentUrlChecker.findGovernmentTopLevelDomain
 import org.mozilla.fenix.utils.Settings
 
 /**
@@ -41,6 +42,7 @@ data class WebsiteInfoState(
     val websiteTitle: String,
     val websiteInfoUiValues: WebsiteInfoUiValues,
     val certificateName: String,
+    val governmentDomainName: String?,
 ) : State {
     companion object {
         /**
@@ -69,7 +71,9 @@ data class WebsiteInfoState(
                 WebsiteInfoUiValues.INSECURE
             }
 
-            return WebsiteInfoState(websiteUrl, websiteTitle, uiValues, certificateName)
+            val governmentDomainName = findGovernmentTopLevelDomain(websiteUrl)
+
+            return WebsiteInfoState(websiteUrl, websiteTitle, uiValues, certificateName, governmentDomainName)
         }
     }
 }
