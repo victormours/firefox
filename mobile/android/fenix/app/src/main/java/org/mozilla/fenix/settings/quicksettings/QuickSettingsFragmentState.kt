@@ -93,6 +93,10 @@ enum class WebsiteInfoUiValues(
         R.string.quick_settings_sheet_insecure_connection_2,
         R.drawable.mozac_ic_broken_lock,
     ),
+    GOVERNMENT(
+        R.string.quick_settings_sheet_government,
+        R.drawable.mozac_ic_government,
+    ),
     Document(
         R.string.quick_settings_sheet_local_page,
         R.drawable.mozac_ic_page_portrait_24,
